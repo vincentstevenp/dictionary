@@ -1,151 +1,62 @@
-class ResponseModel {
+class DictionaryResponse {
   String? word;
-  String? phonetic;
-  List<Phonetics>? phonetics;
-  List<Meanings>? meanings;
-  License? license;
-  List<String>? sourceUrls;
+  String? pronunciation;
+  List<Definition>? definitions;
 
-  ResponseModel(
-      {this.word,
-        this.phonetic,
-        this.phonetics,
-        this.meanings,
-        this.license,
-        this.sourceUrls});
+  DictionaryResponse({this.word, this.pronunciation, this.definitions});
 
-  ResponseModel.fromJson(Map<String, dynamic> json) {
+  DictionaryResponse.fromJson(Map<String, dynamic> json) {
     word = json['word'];
-    phonetic = json['phonetic'];
-    if (json['phonetics'] != null) {
-      phonetics = <Phonetics>[];
-      json['phonetics'].forEach((v) {
-        phonetics!.add(new Phonetics.fromJson(v));
-      });
-    }
-    if (json['meanings'] != null) {
-      meanings = <Meanings>[];
-      json['meanings'].forEach((v) {
-        meanings!.add(new Meanings.fromJson(v));
-      });
-    }
-    license =
-    json['license'] != null ? new License.fromJson(json['license']) : null;
-    sourceUrls = json['sourceUrls'].cast<String>();
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['word'] = this.word;
-    data['phonetic'] = this.phonetic;
-    if (this.phonetics != null) {
-      data['phonetics'] = this.phonetics!.map((v) => v.toJson()).toList();
-    }
-    if (this.meanings != null) {
-      data['meanings'] = this.meanings!.map((v) => v.toJson()).toList();
-    }
-    if (this.license != null) {
-      data['license'] = this.license!.toJson();
-    }
-    data['sourceUrls'] = this.sourceUrls;
-    return data;
-  }
-}
-
-class Phonetics {
-  String? text;
-  String? audio;
-  String? sourceUrl;
-
-  Phonetics({this.text, this.audio, this.sourceUrl});
-
-  Phonetics.fromJson(Map<String, dynamic> json) {
-    text = json['text'];
-    audio = json['audio'];
-    sourceUrl = json['sourceUrl'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['text'] = this.text;
-    data['audio'] = this.audio;
-    data['sourceUrl'] = this.sourceUrl;
-    return data;
-  }
-}
-
-class Meanings {
-  String? partOfSpeech;
-  List<Definitions>? definitions;
-  List<String>? synonyms;
-  List<String>? antonyms;
-
-  Meanings({this.partOfSpeech, this.definitions, this.synonyms, this.antonyms});
-
-  Meanings.fromJson(Map<String, dynamic> json) {
-    partOfSpeech = json['partOfSpeech'];
+    pronunciation = json['pronunciation'];
     if (json['definitions'] != null) {
-      definitions = <Definitions>[];
+      definitions = <Definition>[];
       json['definitions'].forEach((v) {
-        definitions!.add(new Definitions.fromJson(v));
+        definitions!.add(Definition.fromJson(v));
       });
     }
-    synonyms = json['synonyms'].cast<String>();
-    antonyms = json['antonyms'].cast<String>();
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['partOfSpeech'] = this.partOfSpeech;
-    if (this.definitions != null) {
-      data['definitions'] = this.definitions!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = {};
+    data['word'] = word;
+    data['pronunciation'] = pronunciation;
+    if (definitions != null) {
+      data['definitions'] = definitions!.map((v) => v.toJson()).toList();
     }
-    data['synonyms'] = this.synonyms;
-    data['antonyms'] = this.antonyms;
     return data;
   }
 }
 
-class Definitions {
+class Definition {
+  String? partOfSpeech;
   String? definition;
+  String? example;
   List<String>? synonyms;
   List<String>? antonyms;
-  String? example;
 
-  Definitions({this.definition, this.synonyms, this.antonyms, this.example});
+  Definition({
+    this.partOfSpeech,
+    this.definition,
+    this.example,
+    this.synonyms,
+    this.antonyms,
+  });
 
-  Definitions.fromJson(Map<String, dynamic> json) {
+  Definition.fromJson(Map<String, dynamic> json) {
+    partOfSpeech = json['partOfSpeech'];
     definition = json['definition'];
-    synonyms = json['synonyms'].cast<String>();
-    antonyms = json['antonyms'].cast<String>();
     example = json['example'];
+    synonyms = json['synonyms']?.cast<String>();
+    antonyms = json['antonyms']?.cast<String>();
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['definition'] = this.definition;
-    data['synonyms'] = this.synonyms;
-    data['antonyms'] = this.antonyms;
-    data['example'] = this.example;
-    return data;
-  }
-}
-
-class License {
-  String? name;
-  String? url;
-
-  License({this.name, this.url});
-
-  License.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    url = json['url'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['url'] = this.url;
+    final Map<String, dynamic> data = {};
+    data['partOfSpeech'] = partOfSpeech;
+    data['definition'] = definition;
+    data['example'] = example;
+    data['synonyms'] = synonyms;
+    data['antonyms'] = antonyms;
     return data;
   }
 }
